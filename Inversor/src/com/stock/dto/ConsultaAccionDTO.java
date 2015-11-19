@@ -55,7 +55,7 @@ public class ConsultaAccionDTO {
 		return hostCorredor;
 	}
 
-	@XmlAttribute
+	@XmlAttribute(name= "hostcorredor")
 	public void setHostCorredor(String hostCorredor) {
 		this.hostCorredor = hostCorredor;
 	}
