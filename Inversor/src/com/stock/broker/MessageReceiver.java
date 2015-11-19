@@ -1,31 +1,56 @@
 package com.stock.broker;
-import com.rabbitmq.client.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+import com.rabbitmq.client.AMQP.BasicProperties;
+import com.rabbitmq.client.Consumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.ShutdownSignalException;
 
+public class MessageReceiver extends MessageQueueEndPoint implements Runnable,
+		Consumer {
 
-public class MessageReceiver {
+	public MessageReceiver(String endPointName) throws IOException,
+			TimeoutException {
+		super(endPointName);
+	}
 
-  private final static String QUEUE_NAME = "bolsa";
+	public void run() {
+		try {
+			// start consuming messages. Auto acknowledge messages.
+			channel.basicConsume(endPointName, true, this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-  public static void main(String[] argv) throws Exception {
-    ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost("localhost");
-    Connection connection = factory.newConnection();
-    Channel channel = connection.createChannel();
+	/**
+	 * Called when consumer is registered.
+	 */
+	public void handleConsumeOk(String consumerTag) {
+		System.out.println("Consumer " + consumerTag + " registered");
+	}
 
-    channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-    System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
+	/**
+	 * Called when new message is available.
+	 */
+	public void handleDelivery(String consumerTag, Envelope env,
+			BasicProperties props, byte[] body) throws IOException {
+		String message = new String(body, "UTF-8");
+		System.out.println(" Mensaje recibido '" + message + "'");
+	}
 
-    Consumer consumer = new DefaultConsumer(channel) {
-      @Override
-      public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
-          throws IOException {
-        String message = new String(body, "UTF-8");
-        System.out.println(" [x] Received '" + message + "'");
-        //Cuando recibo un mensaje realizó la lógica de la bolsa
-      }
-    };
-    channel.basicConsume(QUEUE_NAME, true, consumer);
-  }
+	public void handleCancel(String consumerTag) {
+	}
+
+	public void handleCancelOk(String consumerTag) {
+	}
+
+	public void handleRecoverOk(String consumerTag) {
+	}
+
+	public void handleShutdownSignal(String consumerTag,
+			ShutdownSignalException arg1) {
+	}
+
 }
