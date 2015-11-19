@@ -1,22 +1,23 @@
 package com.stock.inversor;
+
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
+@XmlRootElement(name = "inversor")
 public class Inversor {
 	private String nombre;
-	private String puertoCorredor;
+	private int puertoCorredor;
 	private String hostCorredor;
-	private String nombreArchivo;
+	private int efectivo;
 	ArrayList<Accion> accionesList;
-	
-	public Inversor(String nombre, String puertoCorredor, String hostCorredor,
-			String nombreArchivo) {
+
+	public Inversor() {
 		super();
-		this.nombre = nombre;
-		this.puertoCorredor = puertoCorredor;
-		this.hostCorredor = hostCorredor;
-		this.nombreArchivo = nombreArchivo;
 	}
-		
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -25,11 +26,11 @@ public class Inversor {
 		this.nombre = nombre;
 	}
 
-	public String getPuertoCorredor() {
+	public int getPuertoCorredor() {
 		return puertoCorredor;
 	}
 
-	public void setPuertoCorredor(String puertoCorredor) {
+	public void setPuertoCorredor(int puertoCorredor) {
 		this.puertoCorredor = puertoCorredor;
 	}
 
@@ -41,31 +42,39 @@ public class Inversor {
 		this.hostCorredor = hostCorredor;
 	}
 
-	public String getNombreArchivo() {
-		return nombreArchivo;
+	public int getEfectivo() {
+		return efectivo;
 	}
 
-	public void setNombreArchivo(String nombreArchivo) {
-		this.nombreArchivo = nombreArchivo;
+	@XmlElement(name = "efectivo")
+	public void setEfectivo(int efectivo) {
+		this.efectivo = efectivo;
 	}
-
-	
 
 	public ArrayList<Accion> getAccionesList() {
 		return accionesList;
 	}
 
+	@XmlElementWrapper(name = "acciones")
+	@XmlElement(name = "accion")
 	public void setAccionesList(ArrayList<Accion> accionesList) {
 		this.accionesList = accionesList;
+	}
+
+	public void consultarPortafolio() {
+		System.out.println("Efectivo = " + this.efectivo);
+		System.out.println("Detalle de las acciones:");
+		for (int i = 0; i < this.accionesList.size(); i++) {
+			Accion accion = this.accionesList.get(i);
+			System.out.println(accion.getEmpresa() + "\t"
+					+ accion.getCantidad());
+		}
 	}
 
 	@Override
 	public String toString() {
 		return "Inversor [nombre=" + nombre + ", puertoCorredor="
-				+ puertoCorredor + ", hostCorredor=" + hostCorredor
-				+ ", nombreArchivo=" + nombreArchivo + "]";
+				+ puertoCorredor + ", hostCorredor=" + hostCorredor + "]";
 	}
-
-	
 
 }
