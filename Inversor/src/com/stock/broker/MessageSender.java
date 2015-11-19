@@ -2,28 +2,24 @@ package com.stock.broker;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 
+import java.util.concurrent.TimeoutException;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 
 public class MessageSender {
 
-	private final static String QUEUE_NAME = "broker";
-
-	public void sendMessage(String pathFile) throws java.io.IOException {
+	public void sendMessage(String host, int puerto, String queue_name,
+			String pathFile) throws java.io.IOException, TimeoutException {
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("localhost");
+		factory.setHost(host);
+		factory.setPort(puerto);
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
-
-		channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-		String message = "Mensaje desde el Corredor";
+		channel.queueDeclare(queue_name, false, false, false, null);
 		File file = new File(pathFile);
-		channel.basicPublish("", QUEUE_NAME, null, getBytes(file));
-		System.out.println(" [x] Sent '" + message + "'");
-
+		channel.basicPublish("", queue_name, null, getBytes(file));
 		channel.close();
 		connection.close();
 	}
@@ -36,19 +32,13 @@ public class MessageSender {
 			fileInputStream = new FileInputStream(file);
 			fileInputStream.read(bFile);
 			fileInputStream.close();
-
 			for (int i = 0; i < bFile.length; i++) {
-				System.out.print((char) bFile[i]);
+				//System.out.print((char) bFile[i]);
 			}
-
-			System.out.println("Done");
+			//System.out.println("Done");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return bFile;
-	}
-
-	public static void main(String[] args) throws IOException {
-		new MessageSender().sendMessage("D:\\especializacion\\Doc xml patrones\\file.xml");
 	}
 }
