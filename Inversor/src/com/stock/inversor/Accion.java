@@ -1,5 +1,6 @@
 package com.stock.inversor;
 
+
 public class Accion {
   private String empresa;
   private int cantidad;
