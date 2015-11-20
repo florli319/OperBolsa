@@ -1,19 +1,21 @@
 package com.stock.dto;
+
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement (name= "consulta" )
+@XmlRootElement(name = "consulta")
 public class ConsultaAccionDTO {
 	private String inversor;
 	private String hostCorredor;
 	private int puertoCorredor;
 	private String accion;
 	private String operacion;
-	
+	private String hostInversor;
+	private String colaRtaInversor;
+
 	public ConsultaAccionDTO() {
 		super();
 	}
-	
-	
+
 	public ConsultaAccionDTO(String inversor, String hostCorredor,
 			int puertoCorredor, String accion, String operacion) {
 		super();
@@ -27,19 +29,20 @@ public class ConsultaAccionDTO {
 	public String getOperacion() {
 		return operacion;
 	}
+
 	@XmlElement
 	public void setOperacion(String operacion) {
 		this.operacion = operacion;
 	}
-	
+
 	public String getAccion() {
 		return accion;
 	}
-	@XmlElement (name = "empresa")
+
+	@XmlElement(name = "empresa")
 	public void setAccion(String accion) {
 		this.accion = accion;
 	}
-
 
 	public String getInversor() {
 		return inversor;
@@ -50,16 +53,14 @@ public class ConsultaAccionDTO {
 		this.inversor = inversor;
 	}
 
-
 	public String getHostCorredor() {
 		return hostCorredor;
 	}
 
-	@XmlAttribute(name= "hostcorredor")
+	@XmlAttribute(name = "hostcorredor")
 	public void setHostCorredor(String hostCorredor) {
 		this.hostCorredor = hostCorredor;
 	}
-
 
 	public int getPuertoCorredor() {
 		return puertoCorredor;
@@ -70,6 +71,22 @@ public class ConsultaAccionDTO {
 		this.puertoCorredor = puertoCorredor;
 	}
 
-	
- 
+	public String getHostInversor() {
+		return hostInversor;
+	}
+
+	@XmlAttribute
+	public void setHostInversor(String hostInversor) {
+		this.hostInversor = hostInversor;
+	}
+
+	public String getColaRtaInversor() {
+		return colaRtaInversor;
+	}
+
+	@XmlAttribute
+	public void setColaRtaInversor(String colaRtaInversor) {
+		this.colaRtaInversor = colaRtaInversor;
+	}
+
 }
