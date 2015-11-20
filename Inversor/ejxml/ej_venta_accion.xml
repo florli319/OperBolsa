@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<orden colaRtaInversor="inversor1Rta" hostCorredor="localhost" hostInversor="192.168.220.230" inversor="inversor1" puertoCorredor="5672">
+    <empresa>BBB</empresa>
+    <cantidad>20</cantidad>
+    <operacion>venta</operacion>
+    <precio>8000</precio>
+</orden>
