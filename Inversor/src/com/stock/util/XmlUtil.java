@@ -6,6 +6,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import java.io.File;
+import java.io.IOException;
 
 public class XmlUtil {
 	/**
@@ -38,6 +39,13 @@ public class XmlUtil {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void stringToFile(String xmlSource, String pathFile)
+			throws IOException {
+		java.io.FileWriter fw = new java.io.FileWriter(pathFile);
+		fw.write(xmlSource);
+		fw.close();
 	}
 
 }
