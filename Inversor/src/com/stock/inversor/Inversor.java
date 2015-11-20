@@ -12,11 +12,10 @@ public class Inversor {
 	private int puertoCorredor;
 	private String hostCorredor;
 	private int efectivo;
-	ArrayList<Accion> accionesList;
+	private String hostInversor;
+	private String colaRtaInversor;
 
-	public Inversor() {
-		super();
-	}
+	ArrayList<Accion> accionesList;
 
 	public String getNombre() {
 		return nombre;
@@ -51,6 +50,24 @@ public class Inversor {
 		this.efectivo = efectivo;
 	}
 
+	public String getHostInversor() {
+		return hostInversor;
+	}
+
+	public void setHostInversor(String hostInversor) {
+		this.hostInversor = hostInversor;
+	}
+
+	public String getColaRtaInversor() {
+		return colaRtaInversor;
+	}
+	
+	public void setColaRtaInversor(String colaRtaInversor) {
+		this.colaRtaInversor = colaRtaInversor;
+	}
+	
+	
+	
 	public ArrayList<Accion> getAccionesList() {
 		return accionesList;
 	}
@@ -69,6 +86,17 @@ public class Inversor {
 			System.out.println(accion.getEmpresa() + "\t"
 					+ accion.getCantidad());
 		}
+	}
+
+	public void actualizarPortafolio(String operacion, String accion,
+			int cantidad, int precio) {
+		if ("compra".equalsIgnoreCase(operacion)) {
+			this.efectivo = this.efectivo - (cantidad * precio);
+		}
+		if ("venta".equalsIgnoreCase(operacion)) {
+			this.efectivo = this.efectivo + (cantidad * precio);
+		}
+
 	}
 
 	@Override
