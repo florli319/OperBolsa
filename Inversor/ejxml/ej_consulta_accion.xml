@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<consulta colaRtaInversor="inversor1Rta" hostcorredor="localhost" hostInversor="192.168.220.230" inversor="inversor1" puertoCorredor="5672">
+    <empresa>CCC</empresa>
+    <operacion>consulta</operacion>
+</consulta>
