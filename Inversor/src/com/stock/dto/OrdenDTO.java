@@ -1,7 +1,8 @@
 package com.stock.dto;
+
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement (name= "orden" )
+@XmlRootElement(name = "orden")
 public class OrdenDTO {
 	private String inversor;
 	private String hostCorredor;
@@ -10,24 +11,8 @@ public class OrdenDTO {
 	private String accion;
 	private int cantidad;
 	private int precio;
-	
-	
-	public OrdenDTO() {
-		super();
-	}
-
-	public OrdenDTO(String inversor, String hostCorredor, int puertoCorredor,
-			String operacion, String accion, int cantidad, int precio) {
-		super();
-		this.inversor = inversor;
-		this.hostCorredor = hostCorredor;
-		this.puertoCorredor = puertoCorredor;
-		this.operacion = operacion;
-		this.accion = accion;
-		this.cantidad = cantidad;
-		this.precio = precio;
-	}
-
+	private String hostInversor;
+	private String colaRtaInversor;
 
 	public String getOperacion() {
 		return operacion;
@@ -38,16 +23,14 @@ public class OrdenDTO {
 		this.operacion = operacion;
 	}
 
-
 	public String getAccion() {
 		return accion;
 	}
 
-	@XmlElement(name= "empresa" )
+	@XmlElement(name = "empresa")
 	public void setAccion(String accion) {
 		this.accion = accion;
 	}
-
 
 	public int getCantidad() {
 		return cantidad;
@@ -57,7 +40,6 @@ public class OrdenDTO {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-
 
 	public int getPrecio() {
 		return precio;
@@ -71,6 +53,7 @@ public class OrdenDTO {
 	public String getInversor() {
 		return inversor;
 	}
+
 	@XmlAttribute
 	public void setInversor(String inversor) {
 		this.inversor = inversor;
@@ -79,7 +62,7 @@ public class OrdenDTO {
 	public String getHostCorredor() {
 		return hostCorredor;
 	}
-	
+
 	@XmlAttribute
 	public void setHostCorredor(String hostCorredor) {
 		this.hostCorredor = hostCorredor;
@@ -88,10 +71,28 @@ public class OrdenDTO {
 	public int getPuertoCorredor() {
 		return puertoCorredor;
 	}
-	
+
 	@XmlAttribute
 	public void setPuertoCorredor(int puertoCorredor) {
 		this.puertoCorredor = puertoCorredor;
 	}
-	
+
+	public String getHostInversor() {
+		return hostInversor;
+	}
+
+	@XmlAttribute
+	public void setHostInversor(String hostInversor) {
+		this.hostInversor = hostInversor;
+	}
+
+	public String getColaRtaInversor() {
+		return colaRtaInversor;
+	}
+
+	@XmlAttribute
+	public void setColaRtaInversor(String colaRtaInversor) {
+		this.colaRtaInversor = colaRtaInversor;
+	}
+
 }
