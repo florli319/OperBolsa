@@ -1,16 +1,19 @@
 package com.stock.inversor;
+
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import com.stock.dto.*;
 import com.stock.util.*;
 import com.stock.broker.*;
 
 public class InversorApp {
-	private Inversor inversor;
+	public static Inversor inversor;
 	final Map<String, List<String>> params = new HashMap<>();
-	private final static String archivolog =  "C:\\OperBolsa\\logs\\invesorlogsalida.xml";
+	private final static String archivolog = "C:\\OperBolsa\\logs\\invesorlogsalida.xml";
 
 	public static void main(String[] args) {
 		if (args.length != 8) {
@@ -21,11 +24,10 @@ public class InversorApp {
 		try {
 			inversorApp.leerLineaComandos(args);
 			inversorApp.iniciarInversor();
-			
 			MessageReceiver mr = new MessageReceiver("pruebarespuesta");
 			Thread consumerThread = new Thread(mr);
 			consumerThread.start();
-			
+
 			String comando = null;
 			inversorApp.imprimirMenu();
 			do {
@@ -55,11 +57,23 @@ public class InversorApp {
 	}
 
 	private void iniciarInversor() {
-		inversor = XmlUtil.unmarshallXmlToObject(Inversor.class, params
-				.get("a").get(0));
-		inversor.setNombre(params.get("n").get(0));
-		inversor.setHostCorredor(params.get("h").get(0));
-		inversor.setPuertoCorredor(Integer.parseInt(params.get("p").get(0)));
+		String archivoDatosIniciales = params.get("a").get(0);
+		String direccion;
+		String nombreInversor = params.get("n").get(0);
+		String hostCorredor = params.get("h").get(0);
+		int puertoCorredor = Integer.parseInt(params.get("p").get(0));
+		inversor = XmlUtil.unmarshallXmlToObject(Inversor.class,
+				archivoDatosIniciales);
+		inversor.setNombre(nombreInversor);
+		inversor.setHostCorredor(hostCorredor);
+		inversor.setPuertoCorredor(puertoCorredor);
+		inversor.setColaRtaInversor(nombreInversor + "Rta");
+		try {
+			direccion = InetAddress.getLocalHost().getHostAddress();
+			inversor.setHostInversor(direccion);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void imprimirMenu() {
@@ -93,9 +107,13 @@ public class InversorApp {
 				orden.setInversor(inversor.getNombre());
 				orden.setHostCorredor(inversor.getHostCorredor());
 				orden.setPuertoCorredor(inversor.getPuertoCorredor());
-				XmlUtil.marshallObtjectToXml(orden,archivolog);
+				orden.setHostInversor(inversor.getHostInversor());
+				orden.setColaRtaInversor(inversor.getColaRtaInversor());
+				XmlUtil.marshallObtjectToXml(orden, archivolog);
 				MessageSender ms = new MessageSender();
-				ms.sendMessage(inversor.getHostCorredor(), inversor.getPuertoCorredor(), inversor.getNombre(),archivolog);
+				ms.sendMessage(inversor.getHostCorredor(),
+						inversor.getPuertoCorredor(), inversor.getNombre(),
+						archivolog);
 			} else if ("consulta".equalsIgnoreCase(infoComando[0])) {
 				if (infoComando.length != 2) {
 					System.out.println("Comando no válido");
@@ -108,7 +126,9 @@ public class InversorApp {
 				consulta.setInversor(inversor.getNombre());
 				consulta.setHostCorredor(inversor.getHostCorredor());
 				consulta.setPuertoCorredor(inversor.getPuertoCorredor());
-				XmlUtil.marshallObtjectToXml(consulta,archivolog);
+				consulta.setHostInversor(inversor.getHostInversor());
+				consulta.setColaRtaInversor(inversor.getColaRtaInversor());
+				XmlUtil.marshallObtjectToXml(consulta, archivolog);
 			} else if ("portafolio".equalsIgnoreCase(infoComando[0])) {
 				if (infoComando.length != 1) {
 					System.out.println("Comando no válido");
