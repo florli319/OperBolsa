@@ -15,6 +15,9 @@ public class MessageSender {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(host);
 		factory.setPort(puerto);
+		//factory.setUsername("admin");
+		//factory.setPassword("admin");
+		//factory.setVirtualHost("/");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 		channel.queueDeclare(queue_name, false, false, false, null);
