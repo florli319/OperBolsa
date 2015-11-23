@@ -1,6 +1,7 @@
 package com.stock.inversor;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -61,13 +62,11 @@ public class Inversor {
 	public String getColaRtaInversor() {
 		return colaRtaInversor;
 	}
-	
+
 	public void setColaRtaInversor(String colaRtaInversor) {
 		this.colaRtaInversor = colaRtaInversor;
 	}
-	
-	
-	
+
 	public ArrayList<Accion> getAccionesList() {
 		return accionesList;
 	}
@@ -88,15 +87,27 @@ public class Inversor {
 		}
 	}
 
-	public void actualizarPortafolio(String operacion, String accion,
+	public void actualizarPortafolio(String operacion, String empresa,
 			int cantidad, int precio) {
-		if ("compra".equalsIgnoreCase(operacion)) {
-			this.efectivo = this.efectivo - (cantidad * precio);
+		if (operacion.equalsIgnoreCase("compra")) {
+			this.efectivo -= (cantidad * precio);
 		}
-		if ("venta".equalsIgnoreCase(operacion)) {
-			this.efectivo = this.efectivo + (cantidad * precio);
+		if (operacion.equalsIgnoreCase("venta")) {
+			this.efectivo += (cantidad * precio);
+			cantidad *= -1;
 		}
-
+		if (operacion.equalsIgnoreCase("compra")
+				|| operacion.equalsIgnoreCase("venta")) {
+			Iterator<Accion> iterator = this.getAccionesList().iterator();
+			while (iterator.hasNext()) {
+				Accion accion = iterator.next();
+				String e;
+				e = accion.getEmpresa();
+				if (e.equalsIgnoreCase(empresa)) {
+					accion.setCantidad(accion.getCantidad() + cantidad);
+				}
+			}
+		}
 	}
 
 	@Override
