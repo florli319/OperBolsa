@@ -11,6 +11,7 @@ public class ConsultaAccionDTO {
 	private String operacion;
 	private String hostInversor;
 	private String colaRtaInversor;
+	private String programa;
 
 	public ConsultaAccionDTO() {
 		super();
@@ -89,4 +90,13 @@ public class ConsultaAccionDTO {
 		this.colaRtaInversor = colaRtaInversor;
 	}
 
+	public String getPrograma() {
+		return programa;
+	}
+	@XmlAttribute
+	public void setPrograma(String programa) {
+		this.programa = programa;
+	}
+
+	
 }
