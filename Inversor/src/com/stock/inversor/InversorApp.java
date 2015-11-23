@@ -1,5 +1,6 @@
 package com.stock.inversor;
 
+
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 import java.io.IOException;
@@ -17,14 +18,14 @@ public class InversorApp {
 
 	public static void main(String[] args) {
 		if (args.length != 8) {
-			System.out.println("N˙mero de argumentos no v·lido");
+			System.out.println("N√∫mero de argumentos no v√°lido");
 			System.exit(0);
 		}
 		InversorApp inversorApp = new InversorApp();
 		try {
 			inversorApp.leerLineaComandos(args);
 			inversorApp.iniciarInversor();
-			MessageReceiver mr = new MessageReceiver("pruebarespuesta");
+			MessageReceiver mr = new MessageReceiver(inversor.getColaRtaInversor());
 			Thread consumerThread = new Thread(mr);
 			consumerThread.start();
 
@@ -93,7 +94,7 @@ public class InversorApp {
 					|| "nocompra".equalsIgnoreCase(infoComando[0])
 					|| "noventa".equalsIgnoreCase(infoComando[0])) {
 				if (infoComando.length != 4) {
-					System.out.println("Comando no v·lido");
+					System.out.println("Comando no v√°lido");
 				}
 				OrdenDTO orden = new OrdenDTO();
 				String operacion = infoComando[0];
@@ -109,14 +110,15 @@ public class InversorApp {
 				orden.setPuertoCorredor(inversor.getPuertoCorredor());
 				orden.setHostInversor(inversor.getHostInversor());
 				orden.setColaRtaInversor(inversor.getColaRtaInversor());
+				orden.setPrograma("inversor");
 				XmlUtil.marshallObtjectToXml(orden, archivolog);
 				MessageSender ms = new MessageSender();
 				ms.sendMessage(inversor.getHostCorredor(),
-						inversor.getPuertoCorredor(), inversor.getNombre(),
+						inversor.getPuertoCorredor(), "broker",
 						archivolog);
 			} else if ("consulta".equalsIgnoreCase(infoComando[0])) {
 				if (infoComando.length != 2) {
-					System.out.println("Comando no v·lido");
+					System.out.println("Comando no v√°lido");
 				}
 				ConsultaAccionDTO consulta = new ConsultaAccionDTO();
 				String operacion = infoComando[0];
@@ -128,21 +130,22 @@ public class InversorApp {
 				consulta.setPuertoCorredor(inversor.getPuertoCorredor());
 				consulta.setHostInversor(inversor.getHostInversor());
 				consulta.setColaRtaInversor(inversor.getColaRtaInversor());
+				consulta.setPrograma("inversor");
 				XmlUtil.marshallObtjectToXml(consulta, archivolog);
 				MessageSender ms = new MessageSender();
 				ms.sendMessage(inversor.getHostCorredor(),
-						inversor.getPuertoCorredor(), inversor.getNombre(),
+						inversor.getPuertoCorredor(), "broker",
 						archivolog);
 
 			} else if ("portafolio".equalsIgnoreCase(infoComando[0])) {
 				if (infoComando.length != 1) {
-					System.out.println("Comando no v·lido");
+					System.out.println("Comando no v√°lido");
 				}
 				inversor.consultarPortafolio();
 			} else if ("q".equalsIgnoreCase(infoComando[0])) {
 				System.exit(0);
 			} else {
-				System.out.println("Comando no v·lido");
+				System.out.println("Comando no v√°lido");
 			}
 		} catch (IOException | TimeoutException ie) {
 			ie.printStackTrace();
